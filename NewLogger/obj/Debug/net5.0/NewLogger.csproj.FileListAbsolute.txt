@@ -1,0 +1,16 @@
+C:\Users\user\source\repos\NewLogger\NewLogger\bin\Debug\net5.0\NewLogger.exe
+C:\Users\user\source\repos\NewLogger\NewLogger\bin\Debug\net5.0\NewLogger.deps.json
+C:\Users\user\source\repos\NewLogger\NewLogger\bin\Debug\net5.0\NewLogger.runtimeconfig.json
+C:\Users\user\source\repos\NewLogger\NewLogger\bin\Debug\net5.0\NewLogger.runtimeconfig.dev.json
+C:\Users\user\source\repos\NewLogger\NewLogger\bin\Debug\net5.0\NewLogger.dll
+C:\Users\user\source\repos\NewLogger\NewLogger\bin\Debug\net5.0\ref\NewLogger.dll
+C:\Users\user\source\repos\NewLogger\NewLogger\bin\Debug\net5.0\NewLogger.pdb
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.csprojAssemblyReference.cache
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.AssemblyInfo.cs
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.dll
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\ref\NewLogger.dll
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.pdb
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.genruntimeconfig.cache

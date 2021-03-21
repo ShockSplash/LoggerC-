@@ -1,0 +1,10 @@
+ 
+Exception Logs: 18:48:19 22 марта 2021 г.
+New Error Dima
+Index was outside the bounds of the array.
+---------------------------------------------------------------------------
+ 
+Exception Logs: 18:48:43 22 марта 2021 г.
+New Error Dim22a
+Index was outside the bounds of the array.
+---------------------------------------------------------------------------
