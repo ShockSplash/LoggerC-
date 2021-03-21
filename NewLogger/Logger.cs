@@ -68,8 +68,8 @@ namespace NewLogger
             {
                 sw.Write("\r \nException Logs: ");
                 sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"{message}");
-                sw.WriteLine($"{e.Message}");
+                sw.WriteLine($"Exception message: {message}");
+                sw.WriteLine($"Type of exception: {e.Message}");
                 sw.WriteLine("---------------------------------------------------------------------------");
             }
         }
@@ -92,42 +92,105 @@ namespace NewLogger
 
         public void Fatal(string message)
         {
-            throw new Exception("Критическая ошибка, приложение не может функционировать");
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
+            {
+                sw.Write("\r \nException Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"Exception message: {message}");
+                sw.WriteLine($"Type of exception: Fatal error! The application has been stopped!");
+                sw.WriteLine("---------------------------------------------------------------------------");
+                throw new ApplicationException("The application has been stopped!");
+            }
         }
 
         public void Fatal(string message, Exception e)
         {
-            throw new Exception(message + " " + e.Message);
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
+            {
+                sw.Write("\r \nException Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"Exception message: {message}");
+                sw.WriteLine($"Type of exception:{e.Message}! The application has been stopped!");
+                sw.WriteLine("---------------------------------------------------------------------------");
+                throw new ApplicationException("The application has been stopped!");
+            }
         }
 
         public void Info(string message)
         {
-            throw new NotImplementedException();
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
+            {
+                sw.Write("\r \nInfo Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"Info message: {message}");
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
         }
 
         public void Info(string message, Exception e)
         {
-            throw new NotImplementedException();
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
+            {
+                sw.Write("\r \nInfo Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"Info message: {message}");
+                sw.WriteLine($"Type of info exception: {e.Message}");
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
         }
 
         public void Info(string message, params object[] args)
         {
-            throw new NotImplementedException();
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
+            {
+                sw.Write("\r \nInfo Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"Exception message: {message}");
+                foreach (var item in args)
+                {
+                    sw.Write(item);
+                }
+            }
         }
 
         public void SystemInfo(string message, Dictionary<object, object> properties = null)
         {
-            throw new NotImplementedException();
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
+            {
+                sw.Write("\r \nSystem Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"System message: {message}");
+                foreach (KeyValuePair<object, object> keyValue in properties)
+                {
+                    sw.WriteLine(keyValue.Key + "  " + keyValue.Value);
+                }
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
         }
 
         public void Warning(string message)
         {
-            throw new NotImplementedException();
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
+            {
+                sw.Write("\r \nWarning Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"Warning message: {message}");
+                sw.WriteLine($"Type of warning: There may be potential errors in the calculation!");
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
         }
 
         public void Warning(string message, Exception e)
         {
-            throw new NotImplementedException();
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
+            {
+                sw.Write("\r \nWarning Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"Warning message: {message}");
+                sw.WriteLine($"There may be potential errors in the calculation!");
+                sw.WriteLine($"Type of warning: {e.Message}");
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
         }
 
         public void WarningUnique(string message)
