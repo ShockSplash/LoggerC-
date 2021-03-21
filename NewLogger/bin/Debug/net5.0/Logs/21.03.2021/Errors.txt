@@ -1,15 +1,10 @@
  
-Exception Logs: 15:11:57 21 марта 2021 г.
-New Error
-Value cannot be null.
+Exception Logs: 20:07:28 21 марта 2021 г.
+Exception message: Error1
+Type of exception: Value cannot be null.
 ---------------------------------------------------------------------------
  
-Exception Logs: 15:12:21 21 марта 2021 г.
-New Error2
-Index was outside the bounds of the array.
----------------------------------------------------------------------------
- 
-Exception Logs: 18:47:47 21 марта 2021 г.
-New Error Dima
-Index was outside the bounds of the array.
+Exception Logs: 20:08:00 21 марта 2021 г.
+Exception message: Error12
+Type of exception: Value cannot be null.
 ---------------------------------------------------------------------------

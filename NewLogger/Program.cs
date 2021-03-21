@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NewLogger
 {
@@ -6,9 +7,10 @@ namespace NewLogger
     {
         static void Main(string[] args)
         {
-            Logger lg = new Logger();
-            lg.Debug("Dim22a");
-            lg.Error("New Error Dim22a", new IndexOutOfRangeException());
+            Logger ls = new Logger();
+
+            ls.WarningUnique("War");
+
         }
     }
 }

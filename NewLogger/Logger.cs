@@ -49,17 +49,40 @@ namespace NewLogger
 
         public void Debug(string message, Exception e)
         {
-
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
+            {
+                sw.Write("\r \nLogs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"{e.Message}");
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
         }
 
         public void DebugFormat(string message, params object[] args)
         {
-            throw new NotImplementedException();
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
+            {
+                sw.Write("\r \nLogs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"{message}");
+                foreach (var item in args)
+                {
+                    sw.Write(args);
+                }
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
         }
 
         public void Error(string message)
         {
-            throw new NotImplementedException();
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
+            {
+                sw.Write("\r \nException Logs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"Exception message: {message}");
+                sw.WriteLine($"Type of exception: Error in the application: the calculation operation is terminated, the application continues to work");
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
         }
 
         public void Error(string message, Exception e)
@@ -87,7 +110,35 @@ namespace NewLogger
 
         public void ErrorUnique(string message, Exception e)
         {
-
+            FileInfo fileInf = new FileInfo(ExPath);
+            if (fileInf.Exists)
+            {
+                using (StreamReader sr = new StreamReader(ExPath, System.Text.Encoding.Default))
+                {
+                    string line;
+                    bool IsThisMessage = false;
+                    bool isThisEx = false;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (line == $"Exception message: {message}")
+                            IsThisMessage = true;
+                        if (line == $"Exception message: {message}")
+                            isThisEx = true;
+                    }
+                    if (!IsThisMessage && !isThisEx)
+                    {
+                        sr.Close();
+                        Error(message, e);
+                    }
+                    IsThisMessage = false;
+                    isThisEx = false;
+                }
+            }
+            else
+            {
+                Error(message, e);
+            }
+           
         }
 
         public void Fatal(string message)
@@ -195,7 +246,31 @@ namespace NewLogger
 
         public void WarningUnique(string message)
         {
-            throw new NotImplementedException();
+            FileInfo fileInf = new FileInfo(FilePath);
+            if (fileInf.Exists)
+            {
+                using (StreamReader sr = new StreamReader(FilePath, System.Text.Encoding.Default))
+                {
+                    string line;
+                    bool IsThisMessage = false;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        if (line == $"Warning message: {message}")
+                            IsThisMessage = true;
+                    }
+                    if (!IsThisMessage)
+                    {
+                        sr.Close();
+                        Warning(message);
+                    }
+                    IsThisMessage = false;
+                }
+            }
+            else
+            {
+                Warning(message);
+            }
+                
         }
     }
 }
