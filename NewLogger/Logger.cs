@@ -113,19 +113,29 @@ namespace NewLogger
             FileInfo fileInf = new FileInfo(ExPath);
             if (fileInf.Exists)
             {
+                /// <summary>
+                /// Проверяем уникальные ошибки через чтение файла с експешенами
+                /// </summary>
                 using (StreamReader sr = new StreamReader(ExPath, System.Text.Encoding.Default))
                 {
                     string line;
+                    int count = 0;
+                    int nextLine = 0;
                     bool IsThisMessage = false;
                     bool isThisEx = false;
                     while ((line = sr.ReadLine()) != null)
                     {
+                        count++;
                         if (line == $"Exception message: {message}")
+                        {
                             IsThisMessage = true;
-                        if (line == $"Exception message: {message}")
+                            nextLine = count;
+                        }
+                        if (line == $"Type of exception: {e.Message}" && (count == nextLine + 1) && IsThisMessage)
                             isThisEx = true;
+                        
                     }
-                    if (!IsThisMessage && !isThisEx)
+                    if (!isThisEx)
                     {
                         sr.Close();
                         Error(message, e);

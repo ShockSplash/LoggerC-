@@ -1,0 +1,20 @@
+ 
+Exception Logs: 19:46:12 22 марта 2021 г.
+Exception message: nu
+Type of exception: Value cannot be null.
+---------------------------------------------------------------------------
+ 
+Exception Logs: 19:46:56 22 марта 2021 г.
+Exception message: num
+Type of exception: Index was outside the bounds of the array.
+---------------------------------------------------------------------------
+ 
+Exception Logs: 19:54:06 22 марта 2021 г.
+Exception message: Hello
+Type of exception: Operation caused a stack overflow.
+---------------------------------------------------------------------------
+ 
+Exception Logs: 20:01:48 22 марта 2021 г.
+Exception message: nu
+Type of exception: Index was outside the bounds of the array.
+---------------------------------------------------------------------------

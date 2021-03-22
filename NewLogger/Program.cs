@@ -7,10 +7,19 @@ namespace NewLogger
     {
         static void Main(string[] args)
         {
-            Logger ls = new Logger();
+            Logger lg = new Logger();
 
-            ls.WarningUnique("War");
+            lg.ErrorUnique("nu", new ArgumentNullException());
+            lg.ErrorUnique("num", new IndexOutOfRangeException());
+            lg.ErrorUnique("nu", new IndexOutOfRangeException());
 
+            lg.Debug("Message for debug");
+
+            lg.ErrorUnique("Hello", new StackOverflowException());
+
+
+            lg.WarningUnique("Please, update system!");
+            lg.WarningUnique("Please, update system!");
         }
     }
 }
