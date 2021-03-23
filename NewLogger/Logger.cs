@@ -19,6 +19,10 @@ namespace NewLogger
 
         private string ExPath { get; set; }
 
+        private static List<string> WarningCheck = new List<string>();
+
+        private static List<string> ErrorCheck = new List<string>();
+
         public Logger()
         {
             this.CurrentDirectory = Directory.GetCurrentDirectory();     // Инициализация текущей директории
@@ -38,24 +42,12 @@ namespace NewLogger
 
         public void Debug(string message)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
-            {
-                sw.Write("\r \nLogs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"{message}");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage($"DEBUG: {message}", FilePath);
         }
 
         public void Debug(string message, Exception e)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
-            {
-                sw.Write("\r \nLogs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"{e.Message}");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage($"DEBUG: {message}", e, FilePath);
         }
 
         public void DebugFormat(string message, params object[] args)
@@ -75,37 +67,18 @@ namespace NewLogger
 
         public void Error(string message)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
-            {
-                sw.Write("\r \nException Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Exception message: {message}");
-                sw.WriteLine($"Type of exception: Error in the application: the calculation operation is terminated, the application continues to work");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage($"ERROR: {message}", ExPath);
         }
 
         public void Error(string message, Exception e)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
-            {
-                sw.Write("\r \nException Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Exception message: {message}");
-                sw.WriteLine($"Type of exception: {e.Message}");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage($"ERROR: {message}", e, ExPath);
+            ErrorCheck.Add($"{message}{e.Message}");
         }
 
         public void Error(Exception ex)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
-            {
-                sw.Write("\r \nException Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Расчет приостановлен, приложение продолжает работу");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage("ERROR", ex, ExPath);
         }
 
         public void ErrorUnique(string message, Exception e)
@@ -113,91 +86,53 @@ namespace NewLogger
             FileInfo fileInf = new FileInfo(ExPath);
             if (fileInf.Exists)
             {
-                /// <summary>
-                /// Проверяем уникальные ошибки через чтение файла с експешенами
-                /// </summary>
-                using (StreamReader sr = new StreamReader(ExPath, System.Text.Encoding.Default))
+
+                string DatePath = FilePath.Substring((FilePath.Length - 18), 10);
+                DateTime dt = DateTime.Now;
+                string now = dt.ToShortDateString();
+
+                bool IsHere = false;
+
+                if (now != DatePath)
                 {
-                    string line;
-                    int count = 0;
-                    int nextLine = 0;
-                    bool IsThisMessage = false;
-                    bool isThisEx = false;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        count++;
-                        if (line == $"Exception message: {message}")
-                        {
-                            IsThisMessage = true;
-                            nextLine = count;
-                        }
-                        if (line == $"Type of exception: {e.Message}" && (count == nextLine + 1) && IsThisMessage)
-                            isThisEx = true;
-                        
-                    }
-                    if (!isThisEx)
-                    {
-                        sr.Close();
-                        Error(message, e);
-                    }
-                    IsThisMessage = false;
-                    isThisEx = false;
+                    ErrorCheck.Clear();
                 }
+                foreach (var item in ErrorCheck)
+                {
+                    if (item == $"{message}{e.Message}")
+                    {
+                        IsHere = true;
+                    }
+                }
+                if (!IsHere)
+                    Error(message,e);
             }
             else
             {
-                Error(message, e);
+                Error(message,e);
             }
-           
         }
 
         public void Fatal(string message)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
-            {
-                sw.Write("\r \nException Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Exception message: {message}");
-                sw.WriteLine($"Type of exception: Fatal error! The application has been stopped!");
-                sw.WriteLine("---------------------------------------------------------------------------");
-                throw new ApplicationException("The application has been stopped!");
-            }
+            WriteMessage($"FATAL ERROR: {message}", ExPath);
+            throw new ApplicationException("Application is stop!");
         }
 
         public void Fatal(string message, Exception e)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
-            {
-                sw.Write("\r \nException Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Exception message: {message}");
-                sw.WriteLine($"Type of exception:{e.Message}! The application has been stopped!");
-                sw.WriteLine("---------------------------------------------------------------------------");
-                throw new ApplicationException("The application has been stopped!");
-            }
+            WriteMessage($"FATAL ERROR: {message}", e, ExPath);
+            throw new Exception(e.Message);
         }
 
         public void Info(string message)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
-            {
-                sw.Write("\r \nInfo Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Info message: {message}");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage($"INFO: {message}", FilePath);
         }
 
         public void Info(string message, Exception e)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.ExPath))
-            {
-                sw.Write("\r \nInfo Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Info message: {message}");
-                sw.WriteLine($"Type of info exception: {e.Message}");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage($"INFO: {message}", e, FilePath);
         }
 
         public void Info(string message, params object[] args)
@@ -231,27 +166,13 @@ namespace NewLogger
 
         public void Warning(string message)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
-            {
-                sw.Write("\r \nWarning Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Warning message: {message}");
-                sw.WriteLine($"Type of warning: There may be potential errors in the calculation!");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage($"WARNING: {message}",FilePath);
+            WarningCheck.Add(message);
         }
 
         public void Warning(string message, Exception e)
         {
-            using (System.IO.StreamWriter sw = System.IO.File.AppendText(this.FilePath))
-            {
-                sw.Write("\r \nWarning Logs: ");
-                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
-                sw.WriteLine($"Warning message: {message}");
-                sw.WriteLine($"There may be potential errors in the calculation!");
-                sw.WriteLine($"Type of warning: {e.Message}");
-                sw.WriteLine("---------------------------------------------------------------------------");
-            }
+            WriteMessage($"WARNING: {message}", e, FilePath);
         }
 
         public void WarningUnique(string message)
@@ -259,22 +180,26 @@ namespace NewLogger
             FileInfo fileInf = new FileInfo(FilePath);
             if (fileInf.Exists)
             {
-                using (StreamReader sr = new StreamReader(FilePath, System.Text.Encoding.Default))
+
+                string DatePath = FilePath.Substring((FilePath.Length - 18), 10);
+                DateTime dt = DateTime.Now;
+                string now = dt.ToShortDateString();
+
+                bool IsHere = false;
+
+                if (now != DatePath)
                 {
-                    string line;
-                    bool IsThisMessage = false;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        if (line == $"Warning message: {message}")
-                            IsThisMessage = true;
-                    }
-                    if (!IsThisMessage)
-                    {
-                        sr.Close();
-                        Warning(message);
-                    }
-                    IsThisMessage = false;
+                    WarningCheck.Clear();
                 }
+                foreach (var item in WarningCheck)
+                {
+                    if (item == message)
+                    {
+                        IsHere = true;
+                    }
+                }
+                if (!IsHere)
+                    Warning(message);
             }
             else
             {
@@ -282,5 +207,27 @@ namespace NewLogger
             }
                 
         }
+        public void WriteMessage(string message,string path)
+        {
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(path))
+            {
+                sw.Write("\r \nLogs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"{message}");
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
+        }
+        public void WriteMessage(string message,Exception ex, string path)
+        {
+            using (System.IO.StreamWriter sw = System.IO.File.AppendText(path))
+            {
+                sw.Write("\r \nLogs: ");
+                sw.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}");
+                sw.WriteLine($"{message}");
+                sw.WriteLine($"Typ of exeption: {ex.Message}");
+                sw.WriteLine("---------------------------------------------------------------------------");
+            }
+        }
     }
+
 }

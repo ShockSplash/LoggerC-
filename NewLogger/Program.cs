@@ -19,7 +19,15 @@ namespace NewLogger
 
 
             lg.WarningUnique("Please, update system!");
-            lg.WarningUnique("Please, update system!");
+            lg.Debug("Test debug!");
+
+           // lg.Fatal("No connection to database!");
+
+            lg.WarningUnique("New Warning!");
+            lg.ErrorUnique("ERROR TEST UNIQUE", new ArgumentException());
+            lg.ErrorUnique("ERROR TEST UNIQUE", new IndexOutOfRangeException());
+            lg.ErrorUnique("New", new ArgumentException());
+            lg.ErrorUnique("ERROR TEST UNIQUE", new ArgumentException());
         }
     }
 }

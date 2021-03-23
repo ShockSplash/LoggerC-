@@ -13,3 +13,4 @@ C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.dll
 C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\ref\NewLogger.dll
 C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.pdb
 C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.genruntimeconfig.cache
+C:\Users\user\source\repos\NewLogger\NewLogger\obj\Debug\net5.0\NewLogger.csprojAssemblyReference.cache
